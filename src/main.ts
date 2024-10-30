@@ -20,5 +20,10 @@ class Main {
   }
 }
 
+// THIS IS THE APPLICATION INTERFACE
 const main = new Main();
+
+// 1. Initialize it
 main.init()
+
+// 2. Set the country [fi, swe, nor]
