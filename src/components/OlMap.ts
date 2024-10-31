@@ -4,11 +4,16 @@ import View from 'ol/View.js';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import GeoJSON from 'ol/format/GeoJSON'
-import MapProvider from './MapProvider';
+import Style from 'ol/style/Style';
+import { Fill, Stroke } from 'ol/style';
 
+import MapProvider from './MapProvider';
 
 // enums
 import { AdministrativeLevel, Country } from '../lib/enums';
+
+// definitions
+import { MapStyle } from '../lib/types';
 
 export default class OlMap {
     map: Map;
@@ -19,6 +24,8 @@ export default class OlMap {
     country: Country | null;
     administrativeLevel: AdministrativeLevel | null;
 
+    style: MapStyle;
+
     constructor() {
         this.map = new Map();
         this.view = new View();
@@ -27,6 +34,17 @@ export default class OlMap {
 
         this.country = null;
         this.administrativeLevel = null;
+
+        // Default style
+        this.style = {
+            backgroundColor: 'lightgrey',
+            fillColor: 'lightblue',
+            strokeWidth: 0.2,
+            strokeColor: 'darkblue',
+            highlightStrokeColor: 'red',
+            highlightFillColor: 'yellow',
+            highlightStrokeWidth: 1
+        }
     }
 
     init(mapId: string) {
@@ -52,5 +70,14 @@ export default class OlMap {
         const extent = this.source.getExtent();
         this.view.fit(extent, { size: this.map.getSize(), padding: [60, 60, 60, 60] });
 
+        // Set the style
+        this.layer.setBackground(this.style.backgroundColor);
+        this.layer.setStyle(new Style({
+            fill: new Fill({ color: this.style.fillColor }),
+            stroke: this.style.strokeWidth ? new Stroke({ 
+                color: this.style.strokeColor, 
+                width: this.style.strokeWidth 
+            }): undefined
+        }));
     }
 }

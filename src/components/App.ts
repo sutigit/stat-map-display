@@ -5,6 +5,9 @@ import Map from './OlMap';
 // enums
 import { Country, AdministrativeLevel } from '../lib/enums';
 
+// definitions
+import { MapStyle } from '../lib/types';
+
 
 export default class App {
   container: Container;
@@ -29,8 +32,8 @@ export default class App {
     this.administrativeLevel = level;
   }
 
-  setStyle(style: any) {
-    console.log('Setting style', style);
+  setStyle(style: MapStyle) {
+    this.map.style = style;
   }
 
   init() {

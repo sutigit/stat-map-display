@@ -16,9 +16,12 @@ map.setCountry(Country.finland)
 map.setAdministrativeLevel(AdministrativeLevel.municipality)
 
 // 3. Add stylings
-map.setStyle({
-
-})
+// map.setStyle({
+//     backgroundColor: 'blue',
+//     fillColor: 'red',
+//     strokeWidth: 1,
+//     strokeColor: 'green'
+// })
 
 // last: Initialize it
 map.init()
