@@ -1,29 +1,19 @@
 import './style.css';
 
 // My components
-import Environment from './components/Environment';
-import OlMap from './components/OlMap';
+import App from './components/App';
+
+// enums
+import { Country, AdministrativeLevel } from './lib/enums';
 
 
-class Main {
-  container: Environment;
-  map: OlMap;
+const main = new App();
 
-  constructor() {
-    this.container = new Environment()
-    this.map = new OlMap();
-  }
+// 1. Set the country [fin, swe, nor, den]
+main.setCountry(Country.finland)
 
-  init() {
-    this.container.init('target-map');
-    this.map.init('target-map');
-  }
-}
+// 2. Set the administrative level ['municipality', 'province']
+main.setAdministrativeLevel(AdministrativeLevel.municipality)
 
-// THIS IS THE APPLICATION INTERFACE
-const main = new Main();
-
-// 1. Initialize it
+// last: Initialize it
 main.init()
-
-// 2. Set the country [fi, swe, nor]
