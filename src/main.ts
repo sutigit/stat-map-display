@@ -7,13 +7,18 @@ import App from './components/App';
 import { Country, AdministrativeLevel } from './lib/enums';
 
 
-const app = new App();
+const map = new App();
 
 // 1. Set the country [fin, swe, nor, den]
-app.setCountry(Country.finland)
+map.setCountry(Country.finland)
 
 // 2. Set the administrative level ['municipality', 'province']
-app.setAdministrativeLevel(AdministrativeLevel.municipality)
+map.setAdministrativeLevel(AdministrativeLevel.municipality)
+
+// 3. Add stylings
+map.setStyle({
+
+})
 
 // last: Initialize it
-app.init()
+map.init()

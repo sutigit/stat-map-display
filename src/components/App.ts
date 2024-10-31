@@ -29,11 +29,15 @@ export default class App {
     this.administrativeLevel = level;
   }
 
+  setStyle(style: any) {
+    console.log('Setting style', style);
+  }
+
   init() {
     this.container.init('target-map');
 
-    this.map.setCountry(this.country!);
-    this.map.setAdministrativeLevel(this.administrativeLevel!);
+    this.map.country = this.country!;
+    this.map.administrativeLevel = this.administrativeLevel!;
     this.map.init('target-map');
   }
 }
