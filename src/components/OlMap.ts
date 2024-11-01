@@ -64,7 +64,7 @@ export default class OlMap {
         this.map.getControls().clear();
 
         // Create source from features from GeoJSON
-        const vectorMap = new StatMap().get(this.country, this.administrativeLevel);
+        const vectorMap = new StatMap(this.country, this.administrativeLevel);
         this.source.addFeatures(new GeoJSON().readFeatures(vectorMap));
 
         // Set basic layer source

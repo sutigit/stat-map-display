@@ -34,6 +34,10 @@ export default class StatMapDisplay {
   }
 
   init() {
+    if (!this.country || !this.administrativeLevel) {
+      throw new Error('Country and administrative level must be set before initializing the map');
+    }
+
     this.container.init('target-map');
 
     this.map.country = this.country!;
