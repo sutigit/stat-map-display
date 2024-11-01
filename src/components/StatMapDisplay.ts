@@ -2,14 +2,11 @@
 import Container from './Container';
 import Map from './OlMap';
 
-// enums
-import { Country, AdministrativeLevel } from '../lib/enums';
-
 // definitions
+import { Country, AdministrativeLevel } from 'stat-map-provider';
 import { MapStyle } from '../lib/types';
 
-
-export default class App {
+export default class StatMapDisplay {
   container: Container;
   map: Map;
 

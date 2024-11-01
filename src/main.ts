@@ -1,22 +1,22 @@
 import './style.css';
 
 // My components
-import App from './components/App';
+import StatMapDisplay from './components/StatMapDisplay';
 
-// enums
-import { Country, AdministrativeLevel } from './lib/enums';
+// Definitions
+import { Country, AdministrativeLevel } from 'stat-map-provider';
 
 
-const map = new App();
+const view = new StatMapDisplay();
 
 // 1. Set the country [fin, swe, nor, den]
-map.setCountry(Country.finland)
+view.setCountry(Country.FINLAND)
 
 // 2. Set the administrative level ['municipality', 'province']
-map.setAdministrativeLevel(AdministrativeLevel.municipality)
+view.setAdministrativeLevel(AdministrativeLevel.MUNICIPALITY)
 
 // 3. Add stylings
-// map.setStyle({
+// view.setStyle({
 //     backgroundColor: 'blue',
 //     fillColor: 'red',
 //     strokeWidth: 1,
@@ -24,4 +24,4 @@ map.setAdministrativeLevel(AdministrativeLevel.municipality)
 // })
 
 // last: Initialize it
-map.init()
+view.init()

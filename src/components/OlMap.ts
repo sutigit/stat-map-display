@@ -1,4 +1,4 @@
-
+// Open layers
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';
 import { FeatureLike } from 'ol/Feature';
@@ -8,12 +8,11 @@ import GeoJSON from 'ol/format/GeoJSON'
 import Style from 'ol/style/Style';
 import { Fill, Stroke } from 'ol/style';
 
-import MapProvider from './MapProvider';
+// Map provider
+import StatMap from 'stat-map-provider';
 
-// enums
-import { AdministrativeLevel, Country } from '../lib/enums';
-
-// definitions
+// Definitions
+import { AdministrativeLevel, Country } from 'stat-map-provider';
 import { MapStyle } from '../lib/types';
 
 export default class OlMap {
@@ -65,7 +64,7 @@ export default class OlMap {
         this.map.getControls().clear();
 
         // Create source from features from GeoJSON
-        const vectorMap = new MapProvider().get(this.country, this.administrativeLevel);
+        const vectorMap = new StatMap().get(this.country, this.administrativeLevel);
         this.source.addFeatures(new GeoJSON().readFeatures(vectorMap));
 
         // Set basic layer source
