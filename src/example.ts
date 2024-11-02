@@ -11,7 +11,7 @@ document.querySelector<HTMLDivElement>('#app')!.appendChild(container)
 // Import
 import StatMapDisplay, { Country, AdministrativeLevel } from './main';
 
-// 0. Create an instance
+// 0. Create an instance with the target div id
 const view = new StatMapDisplay('target');
 
 // 1. Set the country [fin]
