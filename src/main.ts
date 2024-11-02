@@ -3,10 +3,7 @@ import './style.css';
 // EXAMPLE USAGE
 
 // My components
-import StatMapDisplay from './StatMapDisplay';
-
-// Definitions
-import { Country, AdministrativeLevel } from 'stat-map-provider';
+import StatMapDisplay, { Country, AdministrativeLevel } from './StatMapDisplay';
 
 
 const view = new StatMapDisplay();
@@ -17,13 +14,9 @@ view.setCountry(Country.FINLAND)
 // 2. Set the administrative level ['municipality', 'province']
 view.setAdministrativeLevel(AdministrativeLevel.MUNICIPALITY)
 
-// 3. Add stylings
-// view.setStyle({
-//     backgroundColor: 'blue',
-//     fillColor: 'red',
-//     strokeWidth: 1,
-//     strokeColor: 'green'
-// })
+// 3. Add stylings (optional)
+
+// 4. Add settings (optional)
 
 // last: Initialize it
 view.init()

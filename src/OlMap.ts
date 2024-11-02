@@ -12,8 +12,11 @@ import { Fill, Stroke } from 'ol/style';
 import StatMap from 'stat-map-provider';
 
 // Definitions
-import { AdministrativeLevel, Country } from 'stat-map-provider';
 import { MapStyle } from './lib/types';
+
+// Enums
+import { AdministrativeLevel, Country } from './lib/enums';
+
 
 export default class OlMap {
     map: Map;
@@ -47,7 +50,11 @@ export default class OlMap {
             strokeColor: 'darkblue',
             highlightStrokeColor: 'rgba(0, 0, 0, 0.7)',
             highlightFillColor: 'blue',
-            highlightStrokeWidth: 0.2
+            highlightStrokeWidth: 0.2,
+            paddingTop: 60,
+            paddingBottom: 60,
+            paddingLeft: 60,
+            paddingRight: 60
         }
     }
 
@@ -82,7 +89,18 @@ export default class OlMap {
 
         // Fit country to the viewport
         const extent = this.source.getExtent();
-        this.view.fit(extent, { size: this.map.getSize(), padding: [60, 60, 60, 60] });
+        this.view.fit(
+            extent,
+            {
+                size: this.map.getSize(),
+                padding: [
+                    this.style.paddingTop,
+                    this.style.paddingRight,
+                    this.style.paddingBottom,
+                    this.style.paddingLeft
+                ]
+            }
+        );
 
         // Set basic layer style
         this.layer.setBackground(this.style.backgroundColor);
@@ -132,7 +150,7 @@ export default class OlMap {
             if (feature) {
                 this.highlightLayer.getSource()?.addFeature(feature);
             }
-            
+
             this.highlight = feature;
         }
     }
