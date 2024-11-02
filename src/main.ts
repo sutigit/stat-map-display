@@ -1,22 +1,59 @@
-import './style.css';
-
-// EXAMPLE USAGE
-
 // My components
-import StatMapDisplay, { Country, AdministrativeLevel } from './StatMapDisplay';
+import Container from './container';
+import Map from './olmap';
 
+// definitions
+import { MapSettings, MapStyle } from './lib/types';
 
-const view = new StatMapDisplay();
+// enums 
+import { Country, AdministrativeLevel } from './lib/enums';
 
-// 1. Set the country [fin, swe, nor, den]
-view.setCountry(Country.FINLAND)
+class StatMapDisplay {
+  container: Container;
+  map: Map;
+  
+  country: Country | null;
+  administrativeLevel: AdministrativeLevel | null;
+  style: MapStyle | null;
+  settings: MapSettings | null;
 
-// 2. Set the administrative level ['municipality', 'province']
-view.setAdministrativeLevel(AdministrativeLevel.MUNICIPALITY)
+  constructor() {
+    this.container = new Container()
+    this.map = new Map();
 
-// 3. Add stylings (optional)
+    this.country = null;
+    this.administrativeLevel = null
+    this.style = null;
+    this.settings = null;
+  }
 
-// 4. Add settings (optional)
+  setCountry(country: Country) {
+    this.country = country;
+  }
 
-// last: Initialize it
-view.init()
+  setAdministrativeLevel(level: AdministrativeLevel) {
+    this.administrativeLevel = level;
+  }
+
+  setStyle(style: MapStyle) {
+    this.style = style;
+  }
+
+  init() {
+    if (!this.country || !this.administrativeLevel) {
+      throw new Error('Country and administrative level must be set before initializing the map');
+    }
+
+    this.container.create('target-map');
+
+    this.map.country = this.country;
+    this.map.administrativeLevel = this.administrativeLevel;
+    this.style && (this.map.style = this.style);
+    this.settings && (this.map.settings = this.settings);
+    
+    this.map.create('target-map');
+  }
+}
+
+export { Country, AdministrativeLevel };
+export default StatMapDisplay;
