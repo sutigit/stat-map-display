@@ -1,7 +1,7 @@
 import './style.css';
 
 // My components
-import StatMapDisplay from './components/StatMapDisplay';
+import StatMapDisplay from './StatMapDisplay';
 
 // Definitions
 import { Country, AdministrativeLevel } from 'stat-map-provider';

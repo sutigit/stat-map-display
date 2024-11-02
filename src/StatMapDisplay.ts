@@ -4,7 +4,7 @@ import Map from './OlMap';
 
 // definitions
 import { Country, AdministrativeLevel } from 'stat-map-provider';
-import { MapStyle } from '../lib/types';
+import { MapStyle } from './lib/types';
 
 export default class StatMapDisplay {
   container: Container;

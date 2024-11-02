@@ -13,7 +13,7 @@ import StatMap from 'stat-map-provider';
 
 // Definitions
 import { AdministrativeLevel, Country } from 'stat-map-provider';
-import { MapStyle } from '../lib/types';
+import { MapStyle } from './lib/types';
 
 export default class OlMap {
     map: Map;
