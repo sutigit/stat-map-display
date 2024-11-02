@@ -1,4 +1,4 @@
-export interface MapStyle {
+interface MapStyle {
 
     // Background color
     backgroundColor: string;
@@ -13,9 +13,24 @@ export interface MapStyle {
     highlightFillColor: string;
     highlightStrokeWidth: number;
 
+    // Feature selected
+    selectedStrokeColor: string;
+    selectedFillColor: string;
+    selectedStrokeWidth: number;
+
     // Padding
     paddingTop: number;
     paddingBottom: number;
     paddingLeft: number;
     paddingRight: number;
 }
+
+interface MapSettings {
+    minZomm: number;
+    maxZoom: number;
+    highlight: boolean;
+    select: boolean;
+    maxSelections: number;
+}
+
+export type { MapStyle, MapSettings };

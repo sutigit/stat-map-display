@@ -12,7 +12,7 @@ import { Fill, Stroke } from 'ol/style';
 import StatMap from 'stat-map-provider';
 
 // Definitions
-import { MapStyle } from './lib/types';
+import { MapStyle, MapSettings } from './lib/types';
 
 // Enums
 import { AdministrativeLevel, Country } from './lib/enums';
@@ -23,6 +23,7 @@ export default class OlMap {
     view: View;
     layer: VectorLayer;
     highlightLayer: VectorLayer;
+    selectedLayer: VectorLayer;
     source: VectorSource;
 
     country: Country | undefined;
@@ -30,12 +31,16 @@ export default class OlMap {
     highlight: FeatureLike | undefined;
 
     style: MapStyle;
+    settings: MapSettings;
+
+    selectedFeatures: FeatureLike[];
 
     constructor() {
         this.map = new Map();
         this.view = new View();
         this.layer = new VectorLayer();
         this.highlightLayer = new VectorLayer();
+        this.selectedLayer = new VectorLayer();
         this.source = new VectorSource();
 
         this.country = undefined;
@@ -48,14 +53,32 @@ export default class OlMap {
             fillColor: 'lightblue',
             strokeWidth: 0.2,
             strokeColor: 'darkblue',
+
             highlightStrokeColor: 'rgba(0, 0, 0, 0.7)',
             highlightFillColor: 'blue',
             highlightStrokeWidth: 0.2,
+
+            selectedStrokeColor: 'rgba(0, 0, 0, 1)',
+            selectedFillColor: 'darkblue',
+            selectedStrokeWidth: 0.2,
+
             paddingTop: 60,
             paddingBottom: 60,
             paddingLeft: 60,
             paddingRight: 60
         }
+
+        // Default settings
+        this.settings = {
+            minZomm: 6,
+            maxZoom: 10,
+            highlight: true,
+            select: true,
+            maxSelections: 1
+        }
+
+        // Selected features
+        this.selectedFeatures = [];
     }
 
     init(mapId: string) {
@@ -80,12 +103,17 @@ export default class OlMap {
         // Set empty source for highlight layer for interactions
         this.highlightLayer.setSource(new VectorSource());
 
+        // Set empty source for selection layer for interactions
+        this.selectedLayer.setSource(new VectorSource());
+
         // Add the layers to the map
         this.map.addLayer(this.layer);
         this.map.addLayer(this.highlightLayer);
+        this.map.addLayer(this.selectedLayer);
 
-        // Set the view
-        this.map.setView(this.view);
+        // Add view settings
+        this.view.setMinZoom(this.settings.minZomm);
+        this.view.setMaxZoom(this.settings.maxZoom);
 
         // Fit country to the viewport
         const extent = this.source.getExtent();
@@ -101,6 +129,9 @@ export default class OlMap {
                 ]
             }
         );
+
+        // Set the view
+        this.map.setView(this.view);
 
         // Set basic layer style
         this.layer.setBackground(this.style.backgroundColor);
@@ -121,13 +152,22 @@ export default class OlMap {
             }) : undefined
         }));
 
+        // Set selected layer style
+        this.selectedLayer.setStyle(new Style({
+            fill: new Fill({ color: this.style.selectedFillColor }),
+            stroke: this.style.selectedStrokeWidth ? new Stroke({
+                color: this.style.selectedStrokeColor,
+                width: this.style.selectedStrokeWidth
+            }) : undefined
+        }));
+
         // Add click interaction
-        this.map.on('click', (evt) => {
-            this.highlightFeature(evt.pixel);
+        this.settings.select && this.map.on('click', (evt) => {
+            this.selectFeature(evt.pixel);
         });
 
         // Add hover interaction
-        this.map.on('pointermove', (evt) => {
+        this.settings.highlight && this.map.on('pointermove', (evt) => {
             if (evt.dragging) {
                 return;
             }
@@ -136,12 +176,29 @@ export default class OlMap {
         });
     }
 
+    private selectFeature(pixel: number[]) {
+        const feature = this.map.forEachFeatureAtPixel(pixel, function (feature) {
+            return feature;
+        });
+
+        if (feature) {
+
+            // If feature already selected, remove it
+            if (this.selectedFeatures.includes(feature)) {
+                this.selectedFeatures = this.selectedFeatures.filter(f => f !== feature);
+                this.selectedLayer.getSource()?.removeFeature(feature);
+            } 
+            else if (this.selectedFeatures.length < this.settings.maxSelections) {
+                this.selectedFeatures.push(feature);
+                this.selectedLayer.getSource()?.addFeature(feature);
+            }
+        }
+    }
 
     private highlightFeature(pixel: number[]) {
         const feature = this.map.forEachFeatureAtPixel(pixel, function (feature) {
             return feature;
         });
-
 
         if (feature !== this.highlight) {
             if (this.highlight) {
