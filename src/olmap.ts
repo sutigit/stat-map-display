@@ -19,21 +19,18 @@ import { AdministrativeLevel, Country } from './lib/enums';
 
 
 export default class OlMap {
-    map: Map;
-    view: View;
-    layer: VectorLayer;
-    highlightLayer: VectorLayer;
-    selectedLayer: VectorLayer;
-    source: VectorSource;
+    private map: Map;
+    private view: View;
+    private layer: VectorLayer;
+    private highlightLayer: VectorLayer;
+    private selectedLayer: VectorLayer;
+    private source: VectorSource;
 
-    country: Country | undefined;
-    administrativeLevel: AdministrativeLevel | undefined;
-    highlight: FeatureLike | undefined;
+    private style: MapStyle;
+    private settings: MapSettings;
 
-    style: MapStyle;
-    settings: MapSettings;
-
-    selectedFeatures: FeatureLike[];
+    private highlight: FeatureLike | undefined;
+    private selectedFeatures: FeatureLike[];
 
     constructor() {
         this.map = new Map();
@@ -43,8 +40,6 @@ export default class OlMap {
         this.selectedLayer = new VectorLayer();
         this.source = new VectorSource();
 
-        this.country = undefined;
-        this.administrativeLevel = undefined;
         this.highlight = undefined;
 
         // Default style
@@ -89,6 +84,14 @@ export default class OlMap {
         this.map.getControls().clear();
     }
 
+    private setStyles(style: MapStyle) {
+        this.style = { ...this.style, ...style };
+    }
+
+    private setSettings(settings: MapSettings) {
+        this.settings = { ...this.settings, ...settings };
+    }
+
     private setLayers(country: Country, level: AdministrativeLevel) {
         // Create source from StatMap
         const vectorMap = new StatMap(country, level);
@@ -129,7 +132,7 @@ export default class OlMap {
     };
 
     private setLayerStyles() {
-        // Set basic layer style
+        // Set main layer style
         this.layer.setBackground(this.style.backgroundColor);
         this.layer.setStyle(new Style({
             fill: new Fill({ color: this.style.fillColor }),
@@ -210,21 +213,25 @@ export default class OlMap {
         }
     }
 
-    create(mapId: string) {
-        if (this.country && this.administrativeLevel) {
-
-            this.setMap(mapId);
-
-            this.setLayers(this.country, this.administrativeLevel);
-
-            this.setLayerStyles();
-            
-            this.setView();
-
-            this.setInteractions();
-
-        } else {
-            throw new Error('Country and administrative level must be set before initializing the map');
-        }
+    create({
+        mapId,
+        country,
+        administrativeLevel,
+        style,
+        settings
+    }: {
+        mapId: string,
+        country: Country,
+        administrativeLevel: AdministrativeLevel,
+        style: MapStyle | null,
+        settings: MapSettings | null
+    }) {
+        this.setMap(mapId);
+        style && this.setStyles(style);
+        settings && this.setSettings(settings);
+        this.setLayers(country, administrativeLevel);
+        this.setLayerStyles();
+        this.setView();
+        this.setInteractions();
     }
 }

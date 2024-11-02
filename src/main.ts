@@ -1,5 +1,5 @@
 // olmap component
-import Map from './olmap';
+import OlMap from './olmap';
 
 // definitions
 import { MapSettings, MapStyle } from './lib/types';
@@ -8,22 +8,21 @@ import { MapSettings, MapStyle } from './lib/types';
 import { Country, AdministrativeLevel } from './lib/enums';
 
 class StatMapDisplay {
-    mapId: string;
-    map: Map;
-
-    country: Country | null;
-    administrativeLevel: AdministrativeLevel | null;
-    style: MapStyle | null;
-    settings: MapSettings | null;
+    private mapId: string;
+    private map: OlMap;
+    private country: Country | null;
+    private administrativeLevel: AdministrativeLevel | null;
+    private style: MapStyle | null;
+    private settings: MapSettings | null;
 
     constructor(id: string) {
         this.mapId = id;
-        this.map = new Map();
-
         this.country = null;
         this.administrativeLevel = null
         this.style = null;
         this.settings = null;
+
+        this.map = new OlMap();
     }
 
     setCountry(country: Country) {
@@ -43,16 +42,18 @@ class StatMapDisplay {
     }
 
     init() {
-        if (!this.country || !this.administrativeLevel) {
+        if (this.country && this.administrativeLevel) {
+            this.map.create({
+                mapId: this.mapId,
+                country: this.country,
+                administrativeLevel: this.administrativeLevel,
+                style: this.style,
+                settings: this.settings
+            });
+        }
+        else {
             throw new Error('Country and administrative level must be set before initializing the map');
         }
-
-        this.map.country = this.country;
-        this.map.administrativeLevel = this.administrativeLevel;
-        this.style && (this.map.style = this.style);
-        this.settings && (this.map.settings = this.settings);
-
-        this.map.create(this.mapId);
     }
 }
 
