@@ -1,5 +1,7 @@
 import './style.css';
 
+// EXAMPLE USAGE
+
 // My components
 import StatMapDisplay from './StatMapDisplay';
 
