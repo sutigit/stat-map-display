@@ -1,22 +1,30 @@
+// Create a div element with id 'target' for demonstration purposes
 import './style.css';
+const container = document.createElement('div');
+container.id = 'target';
+container.style.width = '100%';
+container.style.height = '100%';
+document.querySelector<HTMLDivElement>('#app')!.appendChild(container)
+
 
 // EXAMPLE USAGE
-
-// My components
+// Import
 import StatMapDisplay, { Country, AdministrativeLevel } from './main';
 
+// 0. Create an instance
+const view = new StatMapDisplay('target');
 
-const view = new StatMapDisplay();
-
-// 1. Set the country [fin, swe, nor, den]
+// 1. Set the country [fin]
 view.setCountry(Country.FINLAND)
 
 // 2. Set the administrative level ['municipality', 'province']
 view.setAdministrativeLevel(AdministrativeLevel.MUNICIPALITY)
 
 // 3. Add stylings (optional)
+// view.setStyle(...)
 
 // 4. Add settings (optional)
+// view.setSettings(...)
 
-// last: Initialize it
+// 5. Initialize it
 view.init()

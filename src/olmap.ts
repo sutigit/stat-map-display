@@ -74,7 +74,7 @@ export default class OlMap {
             maxZoom: 10,
             highlight: true,
             select: true,
-            maxSelections: 1
+            maxSelections: 3
         }
 
         // Selected features
