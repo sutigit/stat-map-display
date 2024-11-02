@@ -9,9 +9,10 @@ import { MapStyle } from './lib/types';
 export default class StatMapDisplay {
   container: Container;
   map: Map;
-
+  
   country: Country | null;
   administrativeLevel: AdministrativeLevel | null;
+  style: MapStyle | null;
 
   constructor() {
     this.container = new Container()
@@ -19,6 +20,7 @@ export default class StatMapDisplay {
 
     this.country = null;
     this.administrativeLevel = null
+    this.style = null;
   }
 
   setCountry(country: Country) {
@@ -30,7 +32,7 @@ export default class StatMapDisplay {
   }
 
   setStyle(style: MapStyle) {
-    this.map.style = style;
+    this.style = style;
   }
 
   init() {
@@ -40,8 +42,9 @@ export default class StatMapDisplay {
 
     this.container.init('target-map');
 
-    this.map.country = this.country!;
-    this.map.administrativeLevel = this.administrativeLevel!;
+    this.map.country = this.country;
+    this.map.administrativeLevel = this.administrativeLevel;
+    this.style && (this.map.style = this.style);
     this.map.init('target-map');
   }
 }
