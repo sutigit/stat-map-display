@@ -26,7 +26,7 @@ interface MapStyle {
 }
 
 interface MapSettings {
-    minZomm: number;
+    minZoom: number;
     maxZoom: number;
     highlight: boolean;
     select: boolean;
