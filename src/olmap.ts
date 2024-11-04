@@ -19,99 +19,123 @@ import { AdministrativeLevel, Country } from './lib/enums';
 
 
 export default class OlMap {
-    private map: Map;
-    private view: View;
-    private layer: VectorLayer;
-    private highlightLayer: VectorLayer;
-    private selectedLayer: VectorLayer;
-    private source: VectorSource;
-
+    private id: string;
+    private country: Country;
+    private administrativeLevel: AdministrativeLevel;
     private style: MapStyle;
     private settings: MapSettings;
+
+    private map: Map;
+    private view: View;
+
+    private featureSource: VectorSource;
+    private highlightSource: VectorSource;
+    private selectedSource: VectorSource;
+
+    private featureLayer: VectorLayer;
+    private highlightLayer: VectorLayer;
+    private selectedLayer: VectorLayer;
+
+    private featureStyles: Style;
+    private highlightStyles: Style;
+    private selectedStyles: Style;
 
     private highlight: FeatureLike | undefined;
     private selectedFeatures: FeatureLike[];
 
-    constructor() {
+    constructor(id: string, country: Country, administrativeLevel: AdministrativeLevel, style: MapStyle, settings: MapSettings) {
+        this.id = id;
+        this.country = country;
+        this.administrativeLevel = administrativeLevel;
+        this.style = style;
+        this.settings = settings;
+
         this.map = new Map();
         this.view = new View();
-        this.layer = new VectorLayer();
+
+        this.featureSource = new VectorSource();
+        this.highlightSource = new VectorSource();
+        this.selectedSource = new VectorSource();
+
+        this.featureLayer = new VectorLayer();
         this.highlightLayer = new VectorLayer();
         this.selectedLayer = new VectorLayer();
-        this.source = new VectorSource();
+
+        this.featureStyles = new Style()
+        this.highlightStyles = new Style()
+        this.selectedStyles = new Style()
+
+        this.featureStyles = new Style()
 
         this.highlight = undefined;
-
-        // Default style
-        this.style = {
-            backgroundColor: 'lightgrey',
-            fillColor: 'lightblue',
-            strokeWidth: 0.2,
-            strokeColor: 'darkblue',
-
-            highlightStrokeColor: 'rgba(0, 0, 0, 0.7)',
-            highlightFillColor: 'blue',
-            highlightStrokeWidth: 0.2,
-
-            selectedStrokeColor: 'rgba(0, 0, 0, 1)',
-            selectedFillColor: 'darkblue',
-            selectedStrokeWidth: 0.2,
-
-            paddingTop: 60,
-            paddingBottom: 60,
-            paddingLeft: 60,
-            paddingRight: 60
-        }
-
-        // Default settings
-        this.settings = {
-            minZomm: 6,
-            maxZoom: 10,
-            highlight: true,
-            select: true,
-            maxSelections: 3
-        }
 
         // Selected features
         this.selectedFeatures = [];
     }
 
-    private setMap(mapId: string) {
+    private setMap() {
         // Set the target HTMLDivElement
-        this.map.setTarget(mapId);
+        this.map.setTarget(this.id);
 
         // Remove controls
         this.map.getControls().clear();
     }
 
-    private setStyles(style: MapStyle) {
-        this.style = { ...this.style, ...style };
-    }
-
-    private setSettings(settings: MapSettings) {
-        this.settings = { ...this.settings, ...settings };
-    }
-
-    private setLayers(country: Country, level: AdministrativeLevel) {
+    private setFeatures() {
         // Create source from StatMap
-        const vectorMap = new StatMap(country, level);
-        this.source.addFeatures(new GeoJSON().readFeatures(vectorMap));
+        const vectorMap = new StatMap(this.country, this.administrativeLevel);
+        this.featureSource.addFeatures(new GeoJSON().readFeatures(vectorMap));
+    }
 
+    private setLayers() {
         // Set sources to layers
-        this.layer.setSource(this.source);
-        this.highlightLayer.setSource(new VectorSource());
-        this.selectedLayer.setSource(new VectorSource());
+        this.featureLayer.setSource(this.featureSource);
+        this.highlightLayer.setSource(this.highlightSource);
+        this.selectedLayer.setSource(this.selectedSource);
 
         // Finally add the layers to the map
-        this.map.addLayer(this.layer);
+        this.map.addLayer(this.featureLayer);
         this.map.addLayer(this.highlightLayer);
         this.map.addLayer(this.selectedLayer);
     }
 
+    private setStyles() {
+        // Set background style
+        this.featureLayer.setBackground(this.style.backgroundColor);
+
+        // Set feature styles
+        this.featureStyles.setFill(new Fill({ color: this.style.fillColor }));
+        this.featureStyles.setStroke(this.style.strokeWidth ? new Stroke({
+            color: this.style.strokeColor,
+            width: this.style.strokeWidth
+        }) : null);
+
+        // Set highlight styles
+        this.highlightStyles.setFill(new Fill({ color: this.style.highlightFillColor }));
+        this.highlightStyles.setStroke(this.style.highlightStrokeWidth ? new Stroke({
+            color: this.style.highlightStrokeColor,
+            width: this.style.highlightStrokeWidth
+        }) : null);
+
+        // Set selected styles
+        this.selectedStyles.setFill(new Fill({ color: this.style.selectedFillColor }));
+        this.selectedStyles.setStroke(this.style.selectedStrokeWidth ? new Stroke({
+            color: this.style.selectedStrokeColor,
+            width: this.style.selectedStrokeWidth
+        }) : null);
+    }
+
+    private setLayerStyles() {
+        // Set styles to layers
+        this.featureLayer.setStyle(this.featureStyles);
+        this.highlightLayer.setStyle(this.highlightStyles);
+        this.selectedLayer.setStyle(this.selectedStyles);
+    };
+
     private setView() {
         // Fit country to the viewport
         this.view.fit(
-            this.source.getExtent(),
+            this.featureSource.getExtent(),
             {
                 size: this.map.getSize(),
                 padding: [
@@ -124,41 +148,11 @@ export default class OlMap {
         );
 
         // Set view settings
-        this.view.setMinZoom(this.settings.minZomm);
+        this.view.setMinZoom(this.settings.minZoom);
         this.view.setMaxZoom(this.settings.maxZoom);
 
         // Finally set the view to the map
         this.map.setView(this.view);
-    };
-
-    private setLayerStyles() {
-        // Set main layer style
-        this.layer.setBackground(this.style.backgroundColor);
-        this.layer.setStyle(new Style({
-            fill: new Fill({ color: this.style.fillColor }),
-            stroke: this.style.strokeWidth ? new Stroke({
-                color: this.style.strokeColor,
-                width: this.style.strokeWidth
-            }) : undefined
-        }));
-
-        // Set highlight layer style
-        this.highlightLayer.setStyle(new Style({
-            fill: new Fill({ color: this.style.highlightFillColor }),
-            stroke: this.style.highlightStrokeWidth ? new Stroke({
-                color: this.style.highlightStrokeColor,
-                width: this.style.highlightStrokeWidth
-            }) : undefined
-        }));
-
-        // Set selected layer style
-        this.selectedLayer.setStyle(new Style({
-            fill: new Fill({ color: this.style.selectedFillColor }),
-            stroke: this.style.selectedStrokeWidth ? new Stroke({
-                color: this.style.selectedStrokeColor,
-                width: this.style.selectedStrokeWidth
-            }) : undefined
-        }));
     };
 
     private setInteractions() {
@@ -213,23 +207,68 @@ export default class OlMap {
         }
     }
 
-    create({
-        mapId,
-        country,
-        administrativeLevel,
-        style,
-        settings
-    }: {
-        mapId: string,
-        country: Country,
-        administrativeLevel: AdministrativeLevel,
-        style: MapStyle | null,
-        settings: MapSettings | null
-    }) {
-        this.setMap(mapId);
-        style && this.setStyles(style);
-        settings && this.setSettings(settings);
-        this.setLayers(country, administrativeLevel);
+    updateStyles(newStyle: MapStyle) {
+        // update background
+        if (this.style.backgroundColor !== newStyle.backgroundColor) {
+            this.featureLayer.setBackground(newStyle.backgroundColor);
+        }
+
+        // update feature styles
+        if (this.style.fillColor !== newStyle.fillColor) {
+            this.featureStyles.setFill(new Fill({ color: newStyle.fillColor }));
+        }
+        if (this.style.strokeColor !== newStyle.strokeColor || this.style.strokeWidth !== newStyle.strokeWidth) {
+            this.featureStyles.setStroke(newStyle.strokeWidth ? new Stroke({
+                color: newStyle.strokeColor,
+                width: newStyle.strokeWidth
+            }) : null);
+        }
+
+        // update highlight styles
+        if (this.style.highlightFillColor !== newStyle.highlightFillColor) {
+            this.highlightStyles.setFill(new Fill({ color: newStyle.highlightFillColor }));
+        }
+        if (this.style.highlightStrokeColor !== newStyle.highlightStrokeColor || this.style.highlightStrokeWidth !== newStyle.highlightStrokeWidth) {
+            this.highlightStyles.setStroke(newStyle.highlightStrokeWidth ? new Stroke({
+                color: newStyle.highlightStrokeColor,
+                width: newStyle.highlightStrokeWidth
+            }) : null);
+        }
+
+        // update selected styles
+        if (this.style.selectedFillColor !== newStyle.selectedFillColor) {
+            this.selectedStyles.setFill(new Fill({ color: newStyle.selectedFillColor }));
+        }
+        if (this.style.selectedStrokeColor !== newStyle.selectedStrokeColor || this.style.selectedStrokeWidth !== newStyle.selectedStrokeWidth) {
+            this.selectedStyles.setStroke(newStyle.selectedStrokeWidth ? new Stroke({
+                color: newStyle.selectedStrokeColor,
+                width: newStyle.selectedStrokeWidth
+            }) : null);
+        }
+
+        this.style = newStyle;
+    }
+
+    updateSettings(newSettings: MapSettings) {
+        // update view settings
+        if (this.settings.minZoom !== newSettings.minZoom) {
+            this.settings.minZoom = newSettings.minZoom;
+            this.view.setMinZoom(newSettings.minZoom);
+        }
+        if (this.settings.maxZoom !== newSettings.maxZoom) {
+            this.settings.maxZoom = newSettings.maxZoom;
+            this.view.setMaxZoom(newSettings.maxZoom);
+        }
+
+        // update rest
+        this.settings = newSettings;
+    }
+
+    init() {
+        this.setMap();
+        this.setFeatures();
+        this.setLayers();
+        this.setStyles();
         this.setLayerStyles();
         this.setView();
         this.setInteractions();

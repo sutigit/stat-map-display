@@ -11,20 +11,22 @@ document.querySelector<HTMLDivElement>('#app')!.appendChild(container)
 // Import
 import StatMapDisplay, { Country, AdministrativeLevel } from './main';
 
-// 0. Create an instance with the target div id
-const view = new StatMapDisplay('target');
+// Instantiate the class
+const view = new StatMapDisplay({
+    id: 'target',
+    country: Country.FINLAND,
+    administrativeLevel: AdministrativeLevel.MUNICIPALITY,
+    // style: { ... }, optional
+    // settings: { ... } optional
+});
 
-// 1. Set the country [fin]
-view.setCountry(Country.FINLAND)
+// view.updateStyle({
+//     backgroundColor: 'red',
+//     highlightFillColor: 'green'
+// })
 
-// 2. Set the administrative level ['municipality', 'province']
-view.setAdministrativeLevel(AdministrativeLevel.MUNICIPALITY)
+// view.updateSettings({
+//     minZoom: 5
+// })
 
-// 3. Add stylings (optional)
-// view.setStyle({ ... })
 
-// 4. Add settings (optional)
-// view.setSettings({ ... })
-
-// 5. Initialize it
-view.init()
