@@ -13,73 +13,67 @@ $ npm install https://github.com/sutigit/stat-map-display.git
 import StatMapDisplay, { Country, AdministrativeLevel } from 'stat-map-display';
 ```
 ## Usage
+Instantiate the class. See parameter description from [`StatMapDisplay`](#statmapdisplay)
+
 ```
-// 0. Create an instance with the target div id
-const view = new StatMapDisplay('target');
+const view = new StatMapDisplay({
+    id: 'target',
+    country: Country.FINLAND,
+    administrativeLevel: AdministrativeLevel.MUNICIPALITY,
+    style: { ... }, // optional
+    settings: { ... } // optional
+});
+```
 
-// 1. Set the country [fin]
-view.setCountry(Country.FINLAND);
+You can update styles and settings anytime later. See [methods](#methods) descriptions.
+```
 
-// 2. Set the administrative level ['municipality', 'province']
-view.setAdministrativeLevel(AdministrativeLevel.MUNICIPALITY);
+view.updateStyle({
+    ...
+})
 
-// 3. Add stylings (optional)
-// view.setStyle({ ... });
-
-// 4. Add settings (optional)
-// view.setSettings({ ... });
-
-// 5. Initialize it
-view.init();
+view.updateSettings([
+    ...
+])
 ```
 
 # Classes
 ## `StatMapDisplay`
 ### Description
-Instantiates the map display. Takes a string as an argument that is the id of your parent HTMLDivElement. The display will attach to that HTML element.
-```
-@params: id of an HTMLDivElement as a string
+Instantiates the map display with initial arguments.
 
-const view = new StatMapDisplay(id='target');
-```
-
+| key | type | required | description |
+|-----|------|---------|-------------|
+| id | string | yes | Set the value to be the same as the given id of your target div element |
+| country | [`Country`](#country) enum | yes | Choose country. See [`Country`](#country) |
+| administrativeLevel | [`AdministrativeLevel`](#administrativelevel) enum | yes | Choose the regional devision type. See [`AdministrativeLevel`](#administrativelevel) |
+| style | object | no | See [options](#style-options) |
+| settings | object | no | See [options](#settings-options) |
 
 # Methods
-## `init()`
+## `updateStyle()`
 ### Description
-Creates the map display and mounts it to the HTMLDivElement which id was given to the class constructor. Needs to be called last, after setting all preferences below.
+Updates new styling of the map view. See [options](#style-options) below.
 ```
-const view = new StatMapDisplay('target');
-
-// Settings ...
-
-view.init();
-```
-
-## `setCountry()`
-### Description
-Sets the country to be displayed in the view. Takes in an option from the enum `Country` as an argument. Call this before init().
-```
-view.setCountry(Country.FINLAND);
-```
-
-## `setAdministrativeLevel()`
-### Description
-Sets the administration level of the regional divisions to be displayed in the view. Takes in an option from the enum `AdministrativeLevel` as an argument. Call this before init().
-```
-view.setAdministrativeLevel(AdministrativeLevel.MUNICIPALITY);
-```
-
-## `setStyle()`
-### Description
-Sets the styling of the map view. See options
-```
-view.setStyle({
+view.updateStyle({
     backgroundColor: '#fefefe',
     ...    
 })
 ```
-### Options
+
+## `updateSettings()`
+### Description
+Update your new preferred settings for the map view. See [options](#settings-options) below.
+```
+view.updateSettings({
+    minZoom: 10,
+    ...
+})
+```
+
+
+# Options
+## Style options
 | Name | Value Type | Default |
 |------|------------|---------|
 | backgroundcolor | string | 'lightgrey' |
@@ -97,16 +91,7 @@ view.setStyle({
 | paddingLeft | number | 60 |
 | paddingRight | number | 60 |
 
-## `setSettings()`
-### Description
-Set your preferred settings for the map view. See options
-```
-view.setSettings({
-    minZoom: 10,
-    ...
-})
-```
-### Options
+## Settings options
 | Name | Value Type | Default |
 |------|------------|---------|
 | minZoom | number | 6 |
@@ -114,7 +99,6 @@ view.setSettings({
 | highlight | boolean | true |
 | select | boolean | true |
 | maxSelections | number | 3 |
-
 
 # Enums
 ## `Country`
@@ -124,7 +108,7 @@ import { Country } from 'stat-map-display'
 console.log(Country.FINLAND)
 // -> FINLAND
 ```
-### Options
+### Country options
 | Name | Value |
 |------|-------|
 | FINLAND | 'FINLAND' |### Options
@@ -137,7 +121,7 @@ console.log(AdministrativeLevel.MUNICIPALITY)
 // -> MUNICIPALITY
 ```
 
-### Options
+### Administrative level options
 | Name | Value |
 |------|-------|
 | MUNICIPALITY | 'MUNICIPALITY' |
