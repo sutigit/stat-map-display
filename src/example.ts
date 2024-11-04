@@ -21,10 +21,10 @@ view.setCountry(Country.FINLAND)
 view.setAdministrativeLevel(AdministrativeLevel.MUNICIPALITY)
 
 // 3. Add stylings (optional)
-// view.setStyle(...)
+// view.setStyle({ ... })
 
 // 4. Add settings (optional)
-// view.setSettings(...)
+// view.setSettings({ ... })
 
 // 5. Initialize it
 view.init()
