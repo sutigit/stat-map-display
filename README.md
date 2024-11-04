@@ -42,7 +42,7 @@ view.updateSettings([
 ### Description
 Instantiates the map display with initial arguments.
 
-| key | type | required | description |
+| Key | Type | Required | Description |
 |-----|------|---------|-------------|
 | id | string | yes | Set the value to be the same as the given id of your target div element |
 | country | [`Country`](#country) enum | yes | Choose country. See [`Country`](#country) |
@@ -74,31 +74,31 @@ view.updateSettings({
 
 # Options
 ## Style options
-| Name | Value Type | Default |
-|------|------------|---------|
-| backgroundcolor | string | 'lightgrey' |
-| fillColor | string | 'lightblue' |
-| strokeWidth | number | 0.2 |
-| strokeColor | string | 'darkblue' |
-| highlightStrokeColor | string | 'rgba(0, 0, 0, 0.7)' |
-| highlightFillColor | string | 'blue' |
-| highlightStrokeWidth | number |  0.2 |
-| selectedStrokeColor | string | 'rgba(0, 0, 0, 1)' |
-| selectedFillColor | string | 'darkblue' |
-| selectedStrokeWidth | number | 0.2 |
-| paddingTop | number | 60 |
-| paddingBottom | number | 60 |
-| paddingLeft | number | 60 |
-| paddingRight | number | 60 |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| backgroundcolor | string | 'lightgrey' | Set the background color for the view |
+| fillColor | string | 'lightblue' | Set the fill color of the map features |
+| strokeWidth | number | 0.2 | Set the outline stroke width of the map features |
+| strokeColor | string | 'darkblue' | Set the outline stroke color of the map features |
+| highlightStrokeColor | string | 'rgba(0, 0, 0, 0.7)' | Set the outline stroke color of the highlighted map features |
+| highlightFillColor | string | 'blue' | Set the fill color of the highlighted map features |
+| highlightStrokeWidth | number |  0.2 | set the outline stroke width of the highlighted map features |
+| selectedStrokeColor | string | 'rgba(0, 0, 0, 1)' | Set the outline stroke color of the selected map features |
+| selectedFillColor | string | 'darkblue' | Set the fill color of the selected map features |
+| selectedStrokeWidth | number | 0.2 | Set the outline stroke color of the selected map features |
+| paddingTop | number | 60 | Set the initial minimum distance from top of the screen to the top edge of the country |
+| paddingBottom | number | 60 | Set the initial minimum distance from bottom of the screen to the bottom edge of the country |
+| paddingLeft | number | 60 | Set the initial minimum distance from left of the screen to the left edge of the country |
+| paddingRight | number | 60 | Set the initial minimum distance from right of the screen to the right edge of the country |
 
 ## Settings options
-| Name | Value Type | Default |
-|------|------------|---------|
-| minZoom | number | 6 |
-| maxZoom | number | 10 |
-| highlight | boolean | true |
-| select | boolean | true |
-| maxSelections | number | 3 |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| minZoom | number | 6 | The minimum zoom level in [openlayers](#https://openlayers.org/) standard |
+| maxZoom | number | 10 | The maximum zoom level in [openlayers](#https://openlayers.org/) standard |
+| highlight | boolean | true | Set the map features to be highlightable |
+| select | boolean | true | Set the map features to be selectable |
+| maxSelections | number | 3 | The max number of selectable features in the map |
 
 # Enums
 ## `Country`
