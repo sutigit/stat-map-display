@@ -71,6 +71,13 @@ view.updateSettings({
 })
 ```
 
+## `getCanvas()`
+### Description
+Get the canvas element.
+```
+view.getCanvas()
+```
+
 
 # Options
 ## Style options
