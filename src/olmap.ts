@@ -264,6 +264,10 @@ export default class OlMap {
         this.settings = newSettings;
     }
 
+    getCanvas() {
+        return this.map.getViewport().querySelector('canvas');
+    }
+
     init() {
         this.setMap();
         this.setFeatures();

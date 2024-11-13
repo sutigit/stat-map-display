@@ -93,6 +93,10 @@ class StatMapDisplay {
         this.settings = { ...this.settings, ...newSettings };
         this.map.updateSettings(this.settings);
     }
+
+    getCanvas() {
+        return this.map.getCanvas();
+    }
 }
 
 export { Country, AdministrativeLevel };
