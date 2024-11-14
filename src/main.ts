@@ -95,6 +95,7 @@ class StatMapDisplay {
     }
 
     getCanvas() {
+        // Can only be retrieved after the map has been initialized
         return this.map.getCanvas();
     }
 }

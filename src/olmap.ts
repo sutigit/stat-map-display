@@ -7,6 +7,7 @@ import VectorSource from 'ol/source/Vector.js';
 import GeoJSON from 'ol/format/GeoJSON'
 import Style from 'ol/style/Style';
 import { Fill, Stroke } from 'ol/style';
+import RenderEvent from 'ol/render/Event';
 
 // Map provider
 import StatMap from 'stat-map-provider';
@@ -42,6 +43,7 @@ export default class OlMap {
 
     private highlight: FeatureLike | undefined;
     private selectedFeatures: FeatureLike[];
+    private canvas: HTMLCanvasElement | undefined;
 
     constructor(id: string, country: Country, administrativeLevel: AdministrativeLevel, style: MapStyle, settings: MapSettings) {
         this.id = id;
@@ -49,6 +51,8 @@ export default class OlMap {
         this.administrativeLevel = administrativeLevel;
         this.style = style;
         this.settings = settings;
+
+        this.canvas = undefined;
 
         this.map = new Map();
         this.view = new View();
@@ -207,6 +211,12 @@ export default class OlMap {
         }
     }
 
+    private setCanvas() {
+        this.map.on('rendercomplete', (event: RenderEvent) => {
+            this.canvas = event.target.viewport_.querySelector('canvas');
+        });
+    }
+
     updateStyles(newStyle: MapStyle) {
         // update background
         if (this.style.backgroundColor !== newStyle.backgroundColor) {
@@ -265,7 +275,8 @@ export default class OlMap {
     }
 
     getCanvas() {
-        return this.map.getViewport().querySelector('canvas');
+        // canvas element can be acquired only after the map has been rendered via setCanvas()
+        return this.canvas;
     }
 
     init() {
@@ -276,5 +287,6 @@ export default class OlMap {
         this.setLayerStyles();
         this.setView();
         this.setInteractions();
+        this.setCanvas();
     }
 }
