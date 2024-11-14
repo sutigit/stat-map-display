@@ -20,7 +20,6 @@ const view = new StatMapDisplay({
     administrativeLevel: AdministrativeLevel.MUNICIPALITY,
 });
 
-
 // Example: Getting the canvas element -------------------------------------------------
 const button = document.createElement('button');
 button.innerText = 'Get Canvas';
@@ -40,3 +39,10 @@ button.addEventListener('click', () => {
     }
 });
 
+// Example: Animating map features -----------------------------------------------------
+const animateButton = document.createElement('button');
+animateButton.innerText = 'Animate';
+animateButton.style.position = 'absolute';
+animateButton.style.top = '60px';
+animateButton.style.right = '10px';
+document.querySelector<HTMLDivElement>('#app')!.appendChild(animateButton);
