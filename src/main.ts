@@ -66,10 +66,10 @@ class StatMapDisplay {
 
         // Set default style and settings
         this.map = new OlMap(
-            this.mapId, 
-            this.country, 
-            this.administrativeLevel, 
-            this.style, 
+            this.mapId,
+            this.country,
+            this.administrativeLevel,
+            this.style,
             this.settings
         );
 
@@ -85,11 +85,16 @@ class StatMapDisplay {
     }
 
     updateStyle(newStyle: Partial<MapStyle>) {
+        // Note: Do not call this in fast intervals or in animations
+        // since the operation can be expensive.
+        // For animations use animateStyle instead
         this.style = { ...this.style, ...newStyle };
         this.map.updateStyles(this.style);
     }
 
     updateSettings(newSettings: Partial<MapSettings>) {
+        // Note: Do not call this in fast intervals or in animations
+        // since the operation can be expensive
         this.settings = { ...this.settings, ...newSettings };
         this.map.updateSettings(this.settings);
     }

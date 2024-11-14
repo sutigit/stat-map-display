@@ -104,7 +104,8 @@ export default class OlMap {
     }
 
     private setStyles() {
-        // Set background style
+        // Set initial background style to the feature layer
+        // to prevent background flicker whn updating canvas background
         this.featureLayer.setBackground(this.style.backgroundColor);
 
         // Set feature styles
@@ -213,14 +214,27 @@ export default class OlMap {
 
     private setCanvas() {
         this.map.on('rendercomplete', (event: RenderEvent) => {
+            // Get canvas element
             this.canvas = event.target.viewport_.querySelector('canvas');
+
+            // Set background color
+            if (this.canvas) {
+                this.canvas.style.backgroundColor = this.style.backgroundColor;
+            }
         });
     }
 
     updateStyles(newStyle: MapStyle) {
         // update background
         if (this.style.backgroundColor !== newStyle.backgroundColor) {
+
+            // update featureLayer background color to prevent flicker
+            // when updating canvas background
             this.featureLayer.setBackground(newStyle.backgroundColor);
+
+            if (this.canvas) {
+                this.canvas.style.backgroundColor = newStyle.backgroundColor;
+            }
         }
 
         // update feature styles
