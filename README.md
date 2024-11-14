@@ -25,18 +25,6 @@ const view = new StatMapDisplay({
 });
 ```
 
-You can update styles and settings anytime later. See [methods](#methods) descriptions.
-```
-
-view.updateStyle({
-    ...
-})
-
-view.updateSettings([
-    ...
-])
-```
-
 # Classes
 ## `StatMapDisplay`
 ### Description
@@ -73,7 +61,7 @@ view.updateSettings({
 
 ## `getCanvas()`
 ### Description
-Get the canvas element.
+Retrieves the canvas element. Note that the canvas element is retrievable only after the map has been instantiated.
 ```
 view.getCanvas()
 ```
