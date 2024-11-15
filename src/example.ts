@@ -10,8 +10,7 @@ document.querySelector<HTMLDivElement>('#app')!.appendChild(container)
 // EXAMPLES
 
 // Example: Importing the class --------------------------------------------------------
-import StatMapDisplay, { Country, AdministrativeLevel } from './main';
-import { ResolutionLevel } from 'stat-map-provider';
+import StatMapDisplay, { Country, AdministrativeLevel, ResolutionLevel } from './main';
 
 
 // Example: Instantiating the class -----------------------------------------------------
@@ -21,32 +20,4 @@ const view = new StatMapDisplay({
     administrativeLevel: AdministrativeLevel.MUNICIPALITY,
     resolution: ResolutionLevel.LEVEL_1,
 });
-
-
-// Example: Getting the canvas element -------------------------------------------------
-const button = document.createElement('button');
-button.innerText = 'Get Canvas';
-button.style.position = 'absolute';
-button.style.top = '10px';
-button.style.right = '10px';
-document.querySelector<HTMLDivElement>('#app')!.appendChild(button);
-
-// Note: the canvas element is not available until the map is rendered
-button.addEventListener('click', () => {
-    const canvas = view.getCanvas();
-    if (canvas) {
-        console.log(view.getCanvas());
-    }
-    else {
-        console.log('Canvas not found');
-    }
-});
-
-// Example: Animating map features -----------------------------------------------------
-const svgButton = document.createElement('button');
-svgButton.innerText = 'SVG';
-svgButton.style.position = 'absolute';
-svgButton.style.top = '60px';
-svgButton.style.right = '10px';
-document.querySelector<HTMLDivElement>('#app')!.appendChild(svgButton);
 

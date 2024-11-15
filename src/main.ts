@@ -5,7 +5,7 @@ import OlMap from './olmap';
 import { MapSettings, MapStyle } from './lib/types';
 
 // enums 
-import { Country, AdministrativeLevel, ResolutionLevel } from './lib/enums';
+import { Country, AdministrativeLevel, ResolutionLevel } from 'stat-map-provider'
 
 class StatMapDisplay {
     private mapId: string;

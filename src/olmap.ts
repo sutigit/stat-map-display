@@ -16,7 +16,7 @@ import StatMap from 'stat-map-provider';
 import { MapStyle, MapSettings } from './lib/types';
 
 // Enums
-import { AdministrativeLevel, Country, ResolutionLevel } from './lib/enums';
+import { AdministrativeLevel, Country, ResolutionLevel } from 'stat-map-provider';
 
 
 export default class OlMap {
