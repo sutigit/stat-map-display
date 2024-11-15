@@ -297,70 +297,20 @@ export default class OlMap {
         this.settings = newSettings;
     }
 
+    /**
+     * Returns the canvas element created by OpenLayers.
+     * @returns canvas element of the map
+     */
     getCanvas() {
-        // canvas element can be acquired only after the map has been rendered via setCanvas()
         return this.canvas;
     }
 
-    getMapSVG() {
-        const svgNamespace = 'http://www.w3.org/2000/svg';
-        const svg = document.createElementNS(svgNamespace, 'svg');
-        const svgGroup = document.createElementNS(svgNamespace, 'g');
-        svg.appendChild(svgGroup);
-
-        const svgWidth = 1000;
-        const svgHeight = 1000;
-        svg.setAttribute('width', svgWidth.toString()); // Set the desired SVG width
-        svg.setAttribute('height', svgHeight.toString()); // Set the desired SVG height
-        svg.setAttribute('xmlns', svgNamespace);
-
-        this.map.getLayers().forEach((layer) => {
-            if (layer instanceof VectorLayer) {
-                layer.getSource().getFeatures().forEach((feature: any) => {
-                    const geometry = feature.getGeometry();
-                    const svgPath = document.createElementNS(svgNamespace, 'path');
-
-                    // Convert geometry to SVG path based on type
-                    let pathString = '';
-
-                    if (geometry.getType() === 'Polygon') {
-                        geometry.getCoordinates().forEach((ring: any) => {
-                            pathString += ring.map((point: any, index: any) => {
-                                const [x, y] = this.map.getPixelFromCoordinate(point); // Project to pixel space
-                                return `${index === 0 ? 'M' : 'L'}${x},${y}`;
-                            }).join(' ') + ' Z '; // Close each ring with 'Z'
-                        });
-                    } else if (geometry.getType() === 'MultiPolygon') {
-                        geometry.getCoordinates().forEach((polygon: any) => {
-                            polygon.forEach((ring: any) => {
-                                pathString += ring.map((point: any, index: any) => {
-                                    const [x, y] = this.map.getPixelFromCoordinate(point); // Project to pixel space
-                                    return `${index === 0 ? 'M' : 'L'}${x},${y}`;
-                                }).join(' ') + ' Z ';
-                            });
-                        });
-                    } else if (geometry.getType() === 'LineString') {
-                        pathString = geometry.getCoordinates().map((point: any, index: any) => {
-                            const [x, y] = this.map.getPixelFromCoordinate(point); // Project to pixel space
-                            return `${index === 0 ? 'M' : 'L'}${x},${y}`;
-                        }).join(' ');
-                    }
-
-                    svgPath.setAttribute('d', pathString);
-                    svgPath.setAttribute('fill', geometry.getType() === 'Polygon' || geometry.getType() === 'MultiPolygon' ? 'rgba(0,0,255,0.1)' : 'none');
-                    svgPath.setAttribute('stroke', 'blue');
-                    svgPath.setAttribute('stroke-width', '0.1');
-
-                    svgGroup.appendChild(svgPath);
-                });
-            }
-        });
-
-        // Convert SVG element to data URL and return as a Blob
-        const serializer = new XMLSerializer();
-        const svgString = serializer.serializeToString(svg);
-        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-        return svgBlob;
+    /**
+     * Returns the map element created by OpenLayers.
+     * @returns openlayers map element
+     */
+    getMap() {
+        return this.map;
     }
 
 

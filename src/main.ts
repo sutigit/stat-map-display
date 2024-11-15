@@ -104,14 +104,20 @@ class StatMapDisplay {
         this.map.updateSettings(this.settings);
     }
 
+    /**
+     * Returns the canvas element created by OpenLayers.
+     * @returns canvas element of the map
+     */
     getCanvas() {
-        // Can only be retrieved after the map has been initialized
         return this.map.getCanvas();
     }
 
-    getMapSVG() {
-        // Can only be retrieved after the map has been initialized
-        return this.map.getMapSVG();
+    /**
+     * Returns the map element created by OpenLayers.
+     * @returns openlayers map element
+     */
+    getMap() {
+        return this.map.getMap();
     }
 }
 

@@ -22,6 +22,7 @@ const view = new StatMapDisplay({
     resolution: ResolutionLevel.LEVEL_1,
 });
 
+
 // Example: Getting the canvas element -------------------------------------------------
 const button = document.createElement('button');
 button.innerText = 'Get Canvas';
@@ -49,21 +50,3 @@ svgButton.style.top = '60px';
 svgButton.style.right = '10px';
 document.querySelector<HTMLDivElement>('#app')!.appendChild(svgButton);
 
-
-// const downloadLink = document.createElement('a');
-// downloadLink.href = URL.createObjectURL(svgBlob);
-// downloadLink.download = 'map_export.svg';
-// downloadLink.click();
-
-svgButton.addEventListener('click', () => {
-    const svg = view.getMapSVG();
-    if (svg) {
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(svg);
-        downloadLink.download = 'map_export.svg';
-        downloadLink.click();
-    }
-    else {
-        console.log('SVG not found');
-    }
-});
