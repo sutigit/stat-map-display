@@ -11,6 +11,7 @@ document.querySelector<HTMLDivElement>('#app')!.appendChild(container)
 
 // Example: Importing the class --------------------------------------------------------
 import StatMapDisplay, { Country, AdministrativeLevel } from './main';
+import { ResolutionLevel } from 'stat-map-provider';
 
 
 // Example: Instantiating the class -----------------------------------------------------
@@ -18,6 +19,7 @@ const view = new StatMapDisplay({
     id: 'target',
     country: Country.FINLAND,
     administrativeLevel: AdministrativeLevel.MUNICIPALITY,
+    resolution: ResolutionLevel.LEVEL_1,
 });
 
 // Example: Getting the canvas element -------------------------------------------------
@@ -40,9 +42,28 @@ button.addEventListener('click', () => {
 });
 
 // Example: Animating map features -----------------------------------------------------
-const animateButton = document.createElement('button');
-animateButton.innerText = 'Animate';
-animateButton.style.position = 'absolute';
-animateButton.style.top = '60px';
-animateButton.style.right = '10px';
-document.querySelector<HTMLDivElement>('#app')!.appendChild(animateButton);
+const svgButton = document.createElement('button');
+svgButton.innerText = 'SVG';
+svgButton.style.position = 'absolute';
+svgButton.style.top = '60px';
+svgButton.style.right = '10px';
+document.querySelector<HTMLDivElement>('#app')!.appendChild(svgButton);
+
+
+// const downloadLink = document.createElement('a');
+// downloadLink.href = URL.createObjectURL(svgBlob);
+// downloadLink.download = 'map_export.svg';
+// downloadLink.click();
+
+svgButton.addEventListener('click', () => {
+    const svg = view.getMapSVG();
+    if (svg) {
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(svg);
+        downloadLink.download = 'map_export.svg';
+        downloadLink.click();
+    }
+    else {
+        console.log('SVG not found');
+    }
+});

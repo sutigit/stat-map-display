@@ -5,13 +5,14 @@ import OlMap from './olmap';
 import { MapSettings, MapStyle } from './lib/types';
 
 // enums 
-import { Country, AdministrativeLevel } from './lib/enums';
+import { Country, AdministrativeLevel, ResolutionLevel } from './lib/enums';
 
 class StatMapDisplay {
     private mapId: string;
     private map: OlMap;
     private country: Country;
     private administrativeLevel: AdministrativeLevel;
+    private resolution: ResolutionLevel;
     private style: MapStyle;
     private settings: MapSettings;
 
@@ -19,18 +20,21 @@ class StatMapDisplay {
         id,
         country,
         administrativeLevel,
+        resolution,
         style,
         settings
     }: {
         id: string,
         country: Country,
         administrativeLevel: AdministrativeLevel,
+        resolution: ResolutionLevel,
         style?: Partial<MapStyle>,
         settings?: Partial<MapSettings>
     }) {
         this.mapId = id;
         this.country = country;
         this.administrativeLevel = administrativeLevel;
+        this.resolution = resolution;
 
         // Default style
         const defaultStyle = {
@@ -69,6 +73,7 @@ class StatMapDisplay {
             this.mapId,
             this.country,
             this.administrativeLevel,
+            this.resolution,
             this.style,
             this.settings
         );
@@ -102,6 +107,11 @@ class StatMapDisplay {
     getCanvas() {
         // Can only be retrieved after the map has been initialized
         return this.map.getCanvas();
+    }
+
+    getMapSVG() {
+        // Can only be retrieved after the map has been initialized
+        return this.map.getMapSVG();
     }
 }
 

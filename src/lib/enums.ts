@@ -1,3 +1,3 @@
-import { Country, AdministrativeLevel } from 'stat-map-provider';
+import { Country, AdministrativeLevel, ResolutionLevel } from 'stat-map-provider';
 
-export { Country, AdministrativeLevel };
+export { Country, AdministrativeLevel, ResolutionLevel };
