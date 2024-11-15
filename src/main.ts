@@ -121,5 +121,5 @@ class StatMapDisplay {
     }
 }
 
-export { Country, AdministrativeLevel };
+export { Country, AdministrativeLevel, ResolutionLevel };
 export default StatMapDisplay;
