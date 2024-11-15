@@ -10,7 +10,7 @@ $ npm install https://github.com/sutigit/stat-map-display.git
 # Usage
 ## import 
 ```
-import StatMapDisplay, { Country, AdministrativeLevel } from 'stat-map-display';
+import StatMapDisplay, { Country, AdministrativeLevel, ResolutionLevel } from 'stat-map-display';
 ```
 ## Usage
 Instantiate the class. See parameter description from [`StatMapDisplay`](#statmapdisplay)
@@ -20,6 +20,7 @@ const view = new StatMapDisplay({
     id: 'target',
     country: Country.FINLAND,
     administrativeLevel: AdministrativeLevel.MUNICIPALITY,
+    resolution: ResolutionLevel.LEVEL_1,
     style: { ... }, // optional
     settings: { ... } // optional
 });
@@ -64,6 +65,13 @@ view.updateSettings({
 Retrieves the canvas element. Note that the canvas element is retrievable only after the map has been instantiated.
 ```
 view.getCanvas()
+```
+
+## `getMap()`
+### Description
+Retrieves the map element. Note that the map element is retrievable only after the map has been instantiated.
+```
+view.getMap()
 ```
 
 
@@ -121,3 +129,19 @@ console.log(AdministrativeLevel.MUNICIPALITY)
 |------|-------|
 | MUNICIPALITY | 'MUNICIPALITY' |
 | PROVINCE | 'PROVINCE' |
+
+
+## `ResolutionLevel`
+```
+import { ResolutionLevel } from 'stat-map-display'
+
+console.log(ResolutionLevel.LEVEL_1)
+// -> 1
+```
+
+### Resolution level options
+| Name | Value |
+|------|-------|
+| LEVEL_1 | 1 |
+| LEVEL_2 | 2 |
+
