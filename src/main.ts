@@ -1,5 +1,7 @@
 // olmap component
 import OlMap from './olmap';
+import { Feature } from 'ol';
+import { FeatureLike } from 'ol/Feature';
 
 // definitions
 import { MapSettings, MapStyle } from './lib/types';
@@ -89,19 +91,33 @@ class StatMapDisplay {
         this.administrativeLevel = level;
     }
 
-    updateStyle(newStyle: Partial<MapStyle>) {
-        // Note: Do not call this in fast intervals or in animations
-        // since the operation can be expensive.
-        // For animations use animateStyle instead
-        this.style = { ...this.style, ...newStyle };
-        this.map.updateStyles(this.style);
-    }
+    // updateStyle(newStyle: Partial<MapStyle>) {
+    //     // Note: Do not call this in fast intervals or in animations
+    //     // since the operation can be expensive.
+    //     // For animations use animateStyle instead
+    //     this.style = { ...this.style, ...newStyle };
+    //     this.map.updateStyles(this.style);
+    // }
 
-    updateSettings(newSettings: Partial<MapSettings>) {
-        // Note: Do not call this in fast intervals or in animations
-        // since the operation can be expensive
-        this.settings = { ...this.settings, ...newSettings };
-        this.map.updateSettings(this.settings);
+    // updateSettings(newSettings: Partial<MapSettings>) {
+    //     // Note: Do not call this in fast intervals or in animations
+    //     // since the operation can be expensive
+    //     this.settings = { ...this.settings, ...newSettings };
+    //     this.map.updateSettings(this.settings);
+    // }
+
+    /**
+     * Update features in the map based on the features regional natcode
+     * @param callback 
+     * @returns void
+     */
+    forEachFeature(callback: (feature: Feature, natcode: string) => void) {
+        const features = this.map.getFeatures();
+
+        features.forEach((feature: Feature) => {
+            const natcode = feature.get('NATCODE');
+            callback(feature, natcode);
+        });
     }
 
     /**

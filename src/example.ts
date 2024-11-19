@@ -11,6 +11,7 @@ document.querySelector<HTMLDivElement>('#app')!.appendChild(container)
 
 // Example: Importing the class --------------------------------------------------------
 import StatMapDisplay, { Country, AdministrativeLevel, ResolutionLevel } from './main';
+import { Feature } from 'ol';
 
 
 // Example: Instantiating the class -----------------------------------------------------
@@ -21,3 +22,7 @@ const view = new StatMapDisplay({
     resolution: ResolutionLevel.LEVEL_1,
 });
 
+// Example: Accessing map feature -------------------------------------------------------
+view.forEachFeature((feature: Feature, natcode: string) => {
+    console.log('Feature:', feature, 'Natcode:', natcode);
+});

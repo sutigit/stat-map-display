@@ -1,7 +1,7 @@
 // Open layers
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';
-import { FeatureLike } from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import GeoJSON from 'ol/format/GeoJSON'
@@ -232,76 +232,13 @@ export default class OlMap {
             }
         });
     }
-
-    updateStyles(newStyle: MapStyle) {
-        // update background
-        if (this.style.backgroundColor !== newStyle.backgroundColor) {
-
-            // update featureLayer background color to prevent flicker
-            // when updating canvas background
-            this.featureLayer.setBackground(newStyle.backgroundColor);
-
-            if (this.canvas) {
-                this.canvas.style.backgroundColor = newStyle.backgroundColor;
-            }
-        }
-
-        // update feature styles
-        if (this.style.fillColor !== newStyle.fillColor) {
-            this.featureStyles.setFill(new Fill({ color: newStyle.fillColor }));
-        }
-        if (this.style.strokeColor !== newStyle.strokeColor || this.style.strokeWidth !== newStyle.strokeWidth) {
-            this.featureStyles.setStroke(newStyle.strokeWidth ? new Stroke({
-                color: newStyle.strokeColor,
-                width: newStyle.strokeWidth
-            }) : null);
-        }
-
-        // update highlight styles
-        if (this.style.highlightFillColor !== newStyle.highlightFillColor) {
-            this.highlightStyles.setFill(new Fill({ color: newStyle.highlightFillColor }));
-        }
-        if (this.style.highlightStrokeColor !== newStyle.highlightStrokeColor || this.style.highlightStrokeWidth !== newStyle.highlightStrokeWidth) {
-            this.highlightStyles.setStroke(newStyle.highlightStrokeWidth ? new Stroke({
-                color: newStyle.highlightStrokeColor,
-                width: newStyle.highlightStrokeWidth
-            }) : null);
-        }
-
-        // update selected styles
-        if (this.style.selectedFillColor !== newStyle.selectedFillColor) {
-            this.selectedStyles.setFill(new Fill({ color: newStyle.selectedFillColor }));
-        }
-        if (this.style.selectedStrokeColor !== newStyle.selectedStrokeColor || this.style.selectedStrokeWidth !== newStyle.selectedStrokeWidth) {
-            this.selectedStyles.setStroke(newStyle.selectedStrokeWidth ? new Stroke({
-                color: newStyle.selectedStrokeColor,
-                width: newStyle.selectedStrokeWidth
-            }) : null);
-        }
-
-        this.style = newStyle;
-    }
-
-    updateSettings(newSettings: MapSettings) {
-        // update view settings
-        if (this.settings.minZoom !== newSettings.minZoom) {
-            this.settings.minZoom = newSettings.minZoom;
-            this.view.setMinZoom(newSettings.minZoom);
-        }
-        if (this.settings.maxZoom !== newSettings.maxZoom) {
-            this.settings.maxZoom = newSettings.maxZoom;
-            this.view.setMaxZoom(newSettings.maxZoom);
-        }
-
-        // update rest
-        this.settings = newSettings;
-    }
+    
 
     /**
      * Returns the canvas element created by OpenLayers.
      * @returns canvas element of the map
      */
-    getCanvas() {
+    getCanvas(): HTMLCanvasElement | undefined {
         return this.canvas;
     }
 
@@ -309,8 +246,16 @@ export default class OlMap {
      * Returns the map element created by OpenLayers.
      * @returns openlayers map element
      */
-    getMap() {
+    getMap(): Map {
         return this.map;
+    }
+
+    /**
+     * Returns the features of the map.
+     * @returns features of the map
+     */
+    getFeatures(): Feature[] {
+        return this.featureSource.getFeatures();
     }
 
 
