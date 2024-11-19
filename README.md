@@ -40,23 +40,13 @@ Instantiates the map display with initial arguments.
 | settings | object | no | See [options](#settings-options) |
 
 # Methods
-## `updateStyle()`
-### Description
-Updates new styling of the map view. See [options](#style-options) below.
-```
-view.updateStyle({
-    backgroundColor: '#fefefe',
-    ...    
-})
-```
 
-## `updateSettings()`
+## `forEachFeature()`
 ### Description
-Update your new preferred settings for the map view. See [options](#settings-options) below.
+Get access to all the features and the features corresponding natcode in the map
 ```
-view.updateSettings({
-    minZoom: 10,
-    ...
+view.forEachFeature((feature: Feature, natcode: string) => {
+    // Do things...
 })
 ```
 
