@@ -1,7 +1,6 @@
 // olmap component
 import OlMap from './olmap';
 import { Feature } from 'ol';
-import { FeatureLike } from 'ol/Feature';
 
 // definitions
 import { MapSettings, MapStyle } from './lib/types';
@@ -82,29 +81,6 @@ class StatMapDisplay {
 
         this.map.init();
     }
-
-    setCountry(country: Country) {
-        this.country = country;
-    }
-
-    setAdministrativeLevel(level: AdministrativeLevel) {
-        this.administrativeLevel = level;
-    }
-
-    // updateStyle(newStyle: Partial<MapStyle>) {
-    //     // Note: Do not call this in fast intervals or in animations
-    //     // since the operation can be expensive.
-    //     // For animations use animateStyle instead
-    //     this.style = { ...this.style, ...newStyle };
-    //     this.map.updateStyles(this.style);
-    // }
-
-    // updateSettings(newSettings: Partial<MapSettings>) {
-    //     // Note: Do not call this in fast intervals or in animations
-    //     // since the operation can be expensive
-    //     this.settings = { ...this.settings, ...newSettings };
-    //     this.map.updateSettings(this.settings);
-    // }
 
     /**
      * Update features in the map based on the features regional natcode
